@@ -1,7 +1,8 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "jest": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
@@ -9,6 +10,9 @@
         "sourceType": "module"
     },
     "rules": {
+        "camelcase": 1,
+        "no-confusing-arrow": 1,
+        "no-shadow": 1,
         "indent": [
             "error",
             "tab"
@@ -21,5 +25,8 @@
             "error",
             "never"
         ]
+    },
+    "globals": {
+        "process": true
     }
 }
