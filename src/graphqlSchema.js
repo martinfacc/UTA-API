@@ -5,7 +5,7 @@ import municipalities from './data/municipalities.js'
 import localities from './data/localities.js'
 import { filterByIdOrName } from './helpers.js'
 
-const typeDefs = `
+const typeDefs = `#graphql
 	type Province {
 		id: ID!
 		name: String!
@@ -72,29 +72,39 @@ const resolvers = {
 		provinces: (parent, args) => filterByIdOrName(provinces, args),
 		departments: (parent, args) => filterByIdOrName(departments, args),
 		municipalities: (parent, args) => filterByIdOrName(municipalities, args),
-		localities: (parent, args) => filterByIdOrName(localities, args)
+		localities: (parent, args) => filterByIdOrName(localities, args),
 	},
 
 	Province: {
-		departments: parent => departments.filter(department => department.provinceId === parent.id)
+		departments: (parent) =>
+			departments.filter((department) => department.provinceId === parent.id),
 	},
 
 	Department: {
-		province: parent => provinces.find(province => province.id === parent.provinceId),
-		municipalities: parent => municipalities.filter(municipality => municipality.departmentId === parent.id)
+		province: (parent) =>
+			provinces.find((province) => province.id === parent.provinceId),
+		municipalities: (parent) =>
+			municipalities.filter(
+				(municipality) => municipality.departmentId === parent.id
+			),
 	},
 
 	Municipality: {
-		department: parent => departments.find(department => department.id === parent.departmentId),
-		localities: parent => localities.filter(locality => locality.municipalityId === parent.id)
+		department: (parent) =>
+			departments.find((department) => department.id === parent.departmentId),
+		localities: (parent) =>
+			localities.filter((locality) => locality.municipalityId === parent.id),
 	},
 
 	Locality: {
-		municipality: parent => municipalities.find(municipality => municipality.id === parent.municipalityId)
-	}
+		municipality: (parent) =>
+			municipalities.find(
+				(municipality) => municipality.id === parent.municipalityId
+			),
+	},
 }
 
 export default makeExecutableSchema({
 	typeDefs,
-	resolvers
+	resolvers,
 })
